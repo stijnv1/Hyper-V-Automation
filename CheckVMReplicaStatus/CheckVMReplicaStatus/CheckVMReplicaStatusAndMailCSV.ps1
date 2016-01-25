@@ -19,7 +19,10 @@ param
     [string]$SMTPServer,
 
     [Parameter(Mandatory=$False)]
-    [string]$MailRecipient
+    [string]$MailRecipient,
+
+	[Parameter(Mandatory=$False)]
+	[string]$MailSender
 
 )
 
@@ -100,7 +103,7 @@ Try
         $VMReplicaOverview | Export-Csv -Path "$CSVPath\$CSVFileName" -NoTypeInformation
 
         #send mail with CSV as attachment
-        Send-MailMessage -SmtpServer $SMTPServer -Attachments "$CSVPath\$CSVFileName" -From "2delijnOTSA@oiltanking.com" -To $MailRecipient -Subject "VM Replica overview of cluster $ClusterName" -Body "Attached an overview of the VM Replica status in cluster $ClusterName"
+        Send-MailMessage -SmtpServer $SMTPServer -Attachments "$CSVPath\$CSVFileName" -From $MailSender -To $MailRecipient -Subject "VM Replica overview of cluster $ClusterName" -Body "Attached an overview of the VM Replica status in cluster $ClusterName"
 
         #delete CSV file
         Remove-Item -Path "$CSVPath\$CSVFileName"
